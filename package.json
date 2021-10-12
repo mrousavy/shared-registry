@@ -5,9 +5,9 @@
   "main": "./dist/shared-registry.min.js",
   "types": "./dist/shared-registry.d.ts",
   "scripts": {
-    "dev": "yarn run tslint && tsc",
+    "dev": "tsc",
     "dev:watch": "nodemon --exec 'yarn run dev || exit 1'",
-    "tslint": "tslint --project .",
+    "lint": "eslint .",
     "build": "yarn run dev && uglifyjs ./dist/shared-registry.js -o ./dist/shared-registry.min.js",
     "test": "yarn run clean && jest && yarn run clean",
     "test:coverage": "yarn run clean && jest --coverage && yarn run clean",
@@ -17,11 +17,14 @@
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^23.3.7",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "jest": "^23.6.0",
     "nodemon": "^1.17.5",
-    "ts-jest": "^23.10.4",
-    "tslint": "^5.10.0",
-    "typescript": "^2.9.2",
+    "prettier": "^2.4.1",
+    "typescript": "^4.4.3",
     "uglify-js": "^3.4.9"
   }
 }

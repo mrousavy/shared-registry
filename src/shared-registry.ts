@@ -1,40 +1,39 @@
-// my awesome library
+/* global WeakRef */
 
-// Intentionally avoid using 'export default' to reduce confusion.
-export const myLib = {
-  /**
-   * Add two numbers
-   * @param number1 First number to add
-   * @param number2 Second number to add
-   */
-  add(number1: number, number2: number): number {
-    return number1 + number2;
-  },
+/**
+ * Can be used in filter functions to filter out empty values.
+ * Can also be used to check for undefined values.
+ * @param value
+ */
+ const notEmpty = <TValue>(value: TValue | null | undefined): value is TValue => value != null
 
-  /**
-   * Subtract two numbers
-   * @param number1 First number to be subtracted
-   * @param number2 Second number to subtract
-   */
-  subtract(number1: number, number2: number): number {
-    return number1 - number2;
-  },
 
-  /**
-   * Multiply two numbers
-   * @param number1 First number to multiply
-   * @param number2 Second number to multiply
-   */
-  multiply(number1: number, number2: number): number {
-    return number1 * number2;
-  },
+export class SharedRegistry<K, V extends object> {
+  private store = new Map<K, WeakRef<V>[]>();
 
-  /**
-   * Divide two numbers
-   * @param number1 First number to be divided
-   * @param number2 Second number to divide
-   */
-  divide(number1: number, number2: number): number {
-    return number1 / number2;
-  },
-};
+  private getValues(key: K): WeakRef<V>[] {
+    if (!this.store.has(key)) 
+      this.store.set(key, [])
+    
+    return this.store.get(key)!
+  }
+
+  get(key: K): readonly V[] {
+    const values = this.getValues(key)
+    return values.map((v) => v.deref()).filter(notEmpty)
+  }
+
+  register(key: K, value: V): void {
+    const values = this.getValues(key)
+    values.push(new WeakRef(value))
+  }
+}
+
+
+
+
+const registry = new SharedRegistry()
+
+class MyObject {
+
+}
