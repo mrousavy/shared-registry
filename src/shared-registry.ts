@@ -5,35 +5,30 @@
  * Can also be used to check for undefined values.
  * @param value
  */
- const notEmpty = <TValue>(value: TValue | null | undefined): value is TValue => value != null
-
+const notEmpty = <TValue>(value: TValue | null | undefined): value is TValue =>
+  value != null;
 
 export class SharedRegistry<K, V extends object> {
   private store = new Map<K, WeakRef<V>[]>();
 
   private getValues(key: K): WeakRef<V>[] {
-    if (!this.store.has(key)) 
-      this.store.set(key, [])
-    
-    return this.store.get(key)!
+    if (!this.store.has(key)) this.store.set(key, []);
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.store.get(key)!;
   }
 
   get(key: K): readonly V[] {
-    const values = this.getValues(key)
-    return values.map((v) => v.deref()).filter(notEmpty)
+    const values = this.getValues(key);
+    return values.map((v) => v.deref()).filter(notEmpty);
   }
 
   register(key: K, value: V): void {
-    const values = this.getValues(key)
-    values.push(new WeakRef(value))
+    const values = this.getValues(key);
+    values.push(new WeakRef(value));
   }
 }
 
+const registry = new SharedRegistry();
 
-
-
-const registry = new SharedRegistry()
-
-class MyObject {
-
-}
+class MyObject {}
