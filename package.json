@@ -1,0 +1,27 @@
+{
+  "name": "shared-registry",
+  "version": "0.0.1",
+  "description": "Shared-Registry allows you to share objects between instances without introducing memory leaks.",
+  "main": "./dist/shared-registry.min.js",
+  "types": "./dist/shared-registry.d.ts",
+  "scripts": {
+    "dev": "yarn run tslint && tsc",
+    "dev:watch": "nodemon --exec 'yarn run dev || exit 1'",
+    "tslint": "tslint --project .",
+    "build": "yarn run dev && uglifyjs ./dist/shared-registry.js -o ./dist/shared-registry.min.js",
+    "test": "yarn run clean && jest && yarn run clean",
+    "test:coverage": "yarn run clean && jest --coverage && yarn run clean",
+    "clean": "rm -rf dist"
+  },
+  "author": "Marc Rousavy <me@mrousavy.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^23.3.7",
+    "jest": "^23.6.0",
+    "nodemon": "^1.17.5",
+    "ts-jest": "^23.10.4",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2",
+    "uglify-js": "^3.4.9"
+  }
+}
